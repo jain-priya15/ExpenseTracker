@@ -7,45 +7,43 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.expense.demo.domain.User;
 import com.expense.demo.service.UserService;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
-	 @Autowired
+	 	@Autowired
 	    private UserService userService;
-
-	    @Autowired
-	    private SecurityService securityService;
-
-	    @Autowired
-	    private UserValidator userValidator;
 
 	    @GetMapping("/registration")
 	    public String registration(Model model) {
 	        model.addAttribute("userForm", new User());
-
 	        return "registration";
 	    }
 
 	    @PostMapping("/registration")
 	    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
-	        userValidator.validate(userForm, bindingResult);
+//	        userValidator.validate(userForm, bindingResult);
 
 	        if (bindingResult.hasErrors()) {
 	            return "registration";
 	        }
-
 	        userService.save(userForm);
-
-	        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-
+	        boolean flag=userService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
+//	        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
+	        if(flag)
 	        return "redirect:/welcome";
+	        return "login";
 	    }
 
 	    @GetMapping("/login")
 	    public String login(Model model, String error, String logout) {
+	    	System.out.println("**********************Hello Priya****************************");
+	    	System.out.println("**********************Hello Priya****************************");
+	    	System.out.println("**********************Hello Priya****************************");
 	        if (error != null)
 	            model.addAttribute("error", "Your username and password is invalid.");
 
@@ -55,10 +53,8 @@ public class UserController {
 	        return "login";
 	    }
 
-	    @GetMapping({"/", "/welcome"})
+	    @GetMapping({"/welcome"})
 	    public String welcome(Model model) {
 	        return "welcome";
 	    }
-	}
-
 }

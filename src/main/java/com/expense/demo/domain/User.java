@@ -1,9 +1,12 @@
 package com.expense.demo.domain;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import lombok.*;
@@ -24,5 +27,8 @@ public class User {
 
     @Transient
     private String passwordConfirm;
+    
+    @OneToMany(mappedBy="user")
+    private List<Expense> expense;
 
 }
