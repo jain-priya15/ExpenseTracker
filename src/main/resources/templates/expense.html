@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <title th:utext="${title}"></title>
+      <style>
+         th, td {
+         padding: 5px;
+         }
+         td span  {
+         font-size:90%;
+         font-style: italic;
+         color: red;
+         }
+         .error {
+         color: red;
+         font-style: italic;
+         }
+      </style>
+   </head>
+   <body>
+      <!-- Include _menu.html -->
+      <th:block th:include="/header"></th:block>
+      <th:block th:include="/menu"></th:block>
+      <h2>Expense</h2>
+       
+      <div th:if="${errorMessage != null}"
+           th:utext="${errorMessage}" class="error">...</div>
+       
+      <form th:action="@{/expense}" th:object="${expense}" method="POST">
+      <input type="hidden" th:field="*{id}" />
+         <table>
+            <tr>
+               <td>Title</td>
+               <td><input type="text" th:field="*{title}" /></td>
+               <td>
+                  <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">..</span>
+               </td>
+            </tr>
+            <tr>
+               <td>Category</td>
+               <td>
+                  <select th:field="*{category}">
+                     <option value=""> -- </option>
+                     <option th:each="category : ${category}"
+                        th:value="${category.id}"
+                        th:utext="${category.name}"/>
+                  </select>
+               <td><span th:if="${#fields.hasErrors('category')}" th:errors="*{category}">..</span></td>
+            </tr>
+            <tr>
+               <td>Description</td>
+               <td><input type="text" th:field="*{description}" /> </td>
+               <td>
+                  <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">..</span>
+               </td>
+            </tr>
+            <tr>
+               <td>Amount</td>
+               <td><input type="text" th:field="*{amount}" /> </td>
+               <td>
+                  <span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">..</span>
+               </td>
+            </tr>
+            <tr>
+               <td>Date</td>
+               <td><input type="date" th:field="*{date}" /> </td>
+               <td>
+                  <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}">..</span>
+               </td>
+            </tr>
+            <tr>
+               <td>&nbsp;</td>
+               <td>
+                  <input type="submit" value="Submit" />
+                  <a th:href="@{/}">Cancel</a>
+               </td>
+               <td>&nbsp;</td>
+            </tr>
+         </table>
+         <div>
+         <a th:href="@{/category}">Add New Category</a>
+         </div>
+      </form>
+       
+   </body>
+</html>

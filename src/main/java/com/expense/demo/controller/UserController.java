@@ -7,16 +7,39 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 
 import com.expense.demo.domain.User;
+import com.expense.demo.service.ExpenseService;
 import com.expense.demo.service.UserService;
 
 @Controller
-@RequestMapping("/user")
 public class UserController {
+	
+		public static String localUsername;
+		
+		@Autowired
+		private ExpenseService expenseService;
+	
 	 	@Autowired
 	    private UserService userService;
+	 	
+	 	@PostMapping("/login")
+	    public String login(@RequestParam("username") String username, @RequestParam("password") String password,Model model ) {
+	 		System.out.println(username +"Hello "+ password);
+	 		boolean flag=userService.autoLogin(username, password);
+	        if(flag) {
+	        	 model.addAttribute("expense",expenseService.findAllByUser(username));
+	 	        model.addAttribute("username",username);
+	 	       localUsername = username;
+	        return "redirect:/dashboard";
+	        }
+	        model.addAttribute("error",true);
+	        return "login";
+	    }
 
 	    @GetMapping("/registration")
 	    public String registration(Model model) {
@@ -25,25 +48,23 @@ public class UserController {
 	    }
 
 	    @PostMapping("/registration")
-	    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+	    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult,Model model) {
 //	        userValidator.validate(userForm, bindingResult);
 
 	        if (bindingResult.hasErrors()) {
 	            return "registration";
 	        }
 	        userService.save(userForm);
+	        localUsername=userForm.getUsername();
 	        boolean flag=userService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 //	        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-	        if(flag)
-	        return "redirect:/welcome";
-	        return "login";
+	        model.addAttribute("expense",expenseService.findAllByUser(userForm.getUsername()));
+	        model.addAttribute("username",userForm.getUsername());
+	        return "redirect:/dashboard";
 	    }
 
 	    @GetMapping("/login")
 	    public String login(Model model, String error, String logout) {
-	    	System.out.println("**********************Hello Priya****************************");
-	    	System.out.println("**********************Hello Priya****************************");
-	    	System.out.println("**********************Hello Priya****************************");
 	        if (error != null)
 	            model.addAttribute("error", "Your username and password is invalid.");
 
@@ -53,8 +74,10 @@ public class UserController {
 	        return "login";
 	    }
 
-	    @GetMapping({"/welcome"})
+	    @GetMapping({"/","/dashboard"})
 	    public String welcome(Model model) {
-	        return "welcome";
+	    	model.addAttribute("expense",userService.findByUsername(localUsername).getExpense());
+	        model.addAttribute("username",localUsername);
+	        return "dashboard";
 	    }
 }

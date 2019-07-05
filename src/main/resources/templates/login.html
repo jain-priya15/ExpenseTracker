@@ -4,7 +4,7 @@
   </head>
   <body>
     <div th:fragment="content">
-        <form name="f" th:action="@{/login}" method="post">               
+        <form name="login" th:action="@{/login}" method="post">               
             <fieldset>
                 <legend>Please Login</legend>
                 <div th:if="${error}" class="alert alert-error">    
@@ -20,8 +20,9 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password"/>    
                 <div class="form-actions">
-                    <button type="submit" class="btn">Log in</button>
+                    <button type="submit" class="btn btn-lg btn-primary btn-block">Log in</button>
                 </div>
+            <h4 class="text-center"><a href="/registration">Create an account</a></h4>
             </fieldset>
         </form>
     </div>

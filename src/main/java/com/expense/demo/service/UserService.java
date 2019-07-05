@@ -7,6 +7,8 @@ public interface UserService {
 	void save(User userForm);
 
 	boolean autoLogin(String username, String passwordConfirm);
+
+	User findByUsername(String username);
 	
 
 }

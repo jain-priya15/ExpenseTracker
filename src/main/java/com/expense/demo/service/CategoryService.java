@@ -9,5 +9,7 @@ public interface CategoryService {
 	List<Category> getCategories();
 
 	void addCategory(Category category);
+	
+	Category findById(Long id);
 
 }

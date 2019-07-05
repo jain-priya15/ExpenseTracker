@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+      <title>Dashboard Expense</title>
+</head>
+<body>
+    <th:block th:include="/header"></th:block>  
+
+    <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Month & Year</th>
+            <th>Expenses</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="expense : ${expense}">
+            <td th:text="${expense.month}+','+${expense.year}"></td>
+            <td th:text="${expense.amount}"></td>
+        </tr>
+    </tbody>
+    <tfoot>
+    	<tr>
+            <td>Total Expenditure</td>
+            <td>INR</td>
+        </tr>
+    
+    </tfoot>
+</table>
+<!-- Include _menu.html -->
+ <th:block th:include="/menu"></th:block>  
+    
+</body>
+</html>    

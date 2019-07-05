@@ -6,14 +6,13 @@ import com.expense.demo.domain.Expense;
 
 public interface ExpenseService {
 
-	List<Expense> findAll();
-
-	List<Expense> findByYear(int year);
-
-	List<Expense> findByMonthAndYear(String month, int year);
-
-	void saveOrUpdateExpense(Expense expense);
 
 	void deleteExpense(Long id);
+
+	List<Expense> findAllByUser(String username);
+
+	List<Expense> findAll();
+
+	void addExpense(Expense expense);
 
 }

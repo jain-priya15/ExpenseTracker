@@ -1,0 +1,57 @@
+</html>
+<html xmlns:th="https://www.thymeleaf.org">
+  <head>
+  	<meta charset="ISO-8859-1">
+    <title>Please Login</title>
+    <style>
+     label {
+         padding: 5px;
+         }
+         input span  {
+         font-size:90%;
+         font-style: italic;
+         color: red;
+         }
+         .error {
+         color: red;
+         font-style: italic;
+         }
+    </style>
+    
+  </head>
+  <body>
+    <div th:fragment="content">
+    
+    <div th:if="${errorMessage != null}" th:utext="${errorMessage}" class="error">
+	</div>
+    
+        <form name="registration" th:object="${userForm}" method="post">   
+        <fieldset>
+         <h2 class="form-signin-heading">Create your account</h2>
+         <div>
+         <label for="username">Username		: </label>
+         <input type="text" th:field="*{username}"  placeholder="Username" />
+           <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">..</span>
+         </div>
+         
+         <div>
+         <label for="password">Password		: </label>
+         <input type="password" th:field="*{password}"  placeholder="Password" />
+          <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">..</span>
+         </div>
+         
+          <div>
+         <label for="passwordConfirm">Confirm Password: </label>
+         <input type="password" th:field="*{passwordConfirm}"  placeholder="Confirm Password" />
+          <span th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">..</span>
+         </div>
+         
+         <div class="submit ">
+          <button type="submit" class="btn btn-lg btn-primary btn-block" name="save">Register!</button>
+        </div>
+         
+        </fieldset>
+        </form>
+    </div>
+  </body>
+</html>

@@ -5,11 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.expense.demo.domain.Expense;
+import com.expense.demo.domain.User;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
-	List<Expense> findByMonthAndYear(String month, int year);
-
-	List<Expense> findByYear(int year);
+	List<Expense> findAllByUser(User user);
 
 }
