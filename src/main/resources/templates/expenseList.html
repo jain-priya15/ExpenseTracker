@@ -1,0 +1,46 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+         th, td {
+         padding: 5px;
+         }
+         td span  {
+         font-size:90%;
+         }
+         .value{
+         margin: 15px;
+         }
+</style>
+</head>
+<body>
+<th:block th:include="/header"></th:block>  
+<table>
+    <thead>
+        <tr>
+            <th> Title </th>
+            <th> Description </th>
+            <th> Amount </th>
+            <th> Date </th>
+            <th> Category </th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${expenses.empty}">
+            <td colspan="2"> No Expense</td>
+        </tr>
+        <tr th:each="expense : ${expenses}">
+            <td><span th:text="${expense.title}"> Title </span></td>
+            <td><span th:text="${expense.description}"> Description </span></td>
+            <td><span th:text="${expense.amount}"> Amount </span></td>
+            <td><span th:text="${expense.date}"> Date </span></td>
+            <td><span th:text="${expense.category.name}"> Date </span></td>
+        </tr>
+    </tbody>
+</table>
+<div>
+         <a th:href="@{/}">Home</a>
+         </div>
+</body>
+</html>

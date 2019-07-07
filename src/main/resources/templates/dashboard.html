@@ -1,8 +1,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
       <title>Dashboard Expense</title>
+      <style>
+         th, td {
+         padding: 5px;
+         }
+         td span  {
+         font-size:90%;
+         font-style: italic;
+         color: red;
+         }
+         .value{
+         margin: 15px;
+         }
+      </style>
 </head>
 <body>
+
     <th:block th:include="/header"></th:block>  
 
     <table class="table table-bordered">
@@ -14,16 +28,15 @@
     </thead>
     <tbody>
         <tr th:each="expense : ${expense}">
-            <td th:text="${expense.month}+','+${expense.year}"></td>
-            <td th:text="${expense.amount}"></td>
+            <td class="value" th:text="${expense[0]}">Month</td>
+            <td class="value" th:text="${expense[1]}">Amount</td>
         </tr>
     </tbody>
     <tfoot>
     	<tr>
             <td>Total Expenditure</td>
-            <td>INR</td>
+            <td><b th:text="*{#aggregates.sum(expense.![1])}"></b>INR</td>
         </tr>
-    
     </tfoot>
 </table>
 <!-- Include _menu.html -->

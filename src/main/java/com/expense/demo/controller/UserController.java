@@ -32,7 +32,8 @@ public class UserController {
 	 		System.out.println(username +"Hello "+ password);
 	 		boolean flag=userService.autoLogin(username, password);
 	        if(flag) {
-	        	 model.addAttribute("expense",expenseService.findAllByUser(username));
+	        	System.out.println("Expense:"+expenseService.getMonthAndYearAndAmount());
+	        	model.addAttribute("expense", expenseService.getMonthAndYearAndAmount());
 	 	        model.addAttribute("username",username);
 	 	       localUsername = username;
 	        return "redirect:/dashboard";
@@ -58,7 +59,7 @@ public class UserController {
 	        localUsername=userForm.getUsername();
 	        boolean flag=userService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 //	        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-	        model.addAttribute("expense",expenseService.findAllByUser(userForm.getUsername()));
+	        model.addAttribute("expense", expenseService.getMonthAndYearAndAmount());
 	        model.addAttribute("username",userForm.getUsername());
 	        return "redirect:/dashboard";
 	    }
@@ -76,7 +77,8 @@ public class UserController {
 
 	    @GetMapping({"/","/dashboard"})
 	    public String welcome(Model model) {
-	    	model.addAttribute("expense",userService.findByUsername(localUsername).getExpense());
+	    	System.out.println("Expense:"+expenseService.getMonthAndYearAndAmount());
+	    	model.addAttribute("expense", expenseService.getMonthAndYearAndAmount());
 	        model.addAttribute("username",localUsername);
 	        return "dashboard";
 	    }

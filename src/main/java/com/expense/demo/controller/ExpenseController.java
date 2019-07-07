@@ -71,11 +71,19 @@ public class ExpenseController {
 	    	  model.addAttribute("errorMessage", "Error: " + e.getMessage());
 	    	  return "expense";
 	      }
-		System.out.println("Expense:"+user.getExpense());
-		model.addAttribute("expense", user.getExpense());
+		//System.out.println("Expense:"+user.getExpense());
+		model.addAttribute("expense", expenseService.getMonthAndYearAndAmount());
         model.addAttribute("username",UserController.localUsername);
 		return "dashboard";
 	}
+	
+	@GetMapping({"/listexpense"})
+    public String expenseList(Model model) {
+    	System.out.println(userService.findByUsername(UserController.localUsername));
+    	model.addAttribute("expenses", expenseService.findAllByUser(UserController.localUsername));
+    	model.addAttribute("username",UserController.localUsername);
+        return "expenseList";
+    }
 	
 	/*
 	 * @RequestMapping(value = "/addCategories", method = RequestMethod.POST) public

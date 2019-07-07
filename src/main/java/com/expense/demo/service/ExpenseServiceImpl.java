@@ -42,5 +42,9 @@ public class ExpenseServiceImpl implements ExpenseService{
 		// TODO Auto-generated method stub
 		return expenseRepository.findAll();
 	}
+	@Override
+	public List<?> getMonthAndYearAndAmount() {
+		return expenseRepository.getGroupByMonthAndYear();
+	}
 
 }

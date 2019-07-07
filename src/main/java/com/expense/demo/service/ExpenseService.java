@@ -14,5 +14,7 @@ public interface ExpenseService {
 	List<Expense> findAll();
 
 	void addExpense(Expense expense);
+	
+	List<?> getMonthAndYearAndAmount();
 
 }
