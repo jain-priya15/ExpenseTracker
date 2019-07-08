@@ -1,5 +1,3 @@
-
-
 insert into category (id, name) values ("1","Electricity");
 insert into category (id, name) values ("2","Phone");
 insert into category (id, name) values ("3","Internet");

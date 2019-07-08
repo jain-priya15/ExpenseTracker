@@ -2,17 +2,18 @@ package com.expense.demo.service;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.expense.demo.domain.Expense;
 import com.expense.demo.domain.User;
 import com.expense.demo.repository.ExpenseRepository;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED)
 public class ExpenseServiceImpl implements ExpenseService{
 	
 	@Autowired
@@ -39,7 +40,6 @@ public class ExpenseServiceImpl implements ExpenseService{
 
 	@Override
 	public List<Expense> findAll() {
-		// TODO Auto-generated method stub
 		return expenseRepository.findAll();
 	}
 	@Override

@@ -9,10 +9,19 @@ import com.expense.demo.domain.Expense;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 	
-
-
+	/**
+	 * 
+	 * @param username
+	 * @return
+	 */
 	User findByUsername(String username);
-
+	
+	/**
+	 * 
+	 * @param username
+	 * @param passwordConfirm
+	 * @return
+	 */
 	User findByUsernameAndPassword(String username, String passwordConfirm);
 
 }

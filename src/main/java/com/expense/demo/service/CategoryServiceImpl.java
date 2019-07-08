@@ -2,10 +2,9 @@ package com.expense.demo.service;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.expense.demo.domain.Category;
 import com.expense.demo.repository.CategoryRepository;
@@ -25,7 +24,6 @@ public class CategoryServiceImpl implements CategoryService{
 	@Override
 	public void addCategory(Category category) {
 		categoryRepository.save(category);
-		
 	}
 
 	@Override

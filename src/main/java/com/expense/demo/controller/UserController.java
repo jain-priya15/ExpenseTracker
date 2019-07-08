@@ -18,7 +18,9 @@ import com.expense.demo.service.UserService;
 
 @Controller
 public class UserController {
-	
+		/**
+		 * 
+		 */
 		public static String localUsername;
 		
 		@Autowired
@@ -27,43 +29,64 @@ public class UserController {
 	 	@Autowired
 	    private UserService userService;
 	 	
+	 	/**
+	 	 * 
+	 	 * @param username
+	 	 * @param password
+	 	 * @param model
+	 	 * @return
+	 	 */
 	 	@PostMapping("/login")
 	    public String login(@RequestParam("username") String username, @RequestParam("password") String password,Model model ) {
 	 		System.out.println(username +"Hello "+ password);
 	 		boolean flag=userService.autoLogin(username, password);
 	        if(flag) {
-	        	System.out.println("Expense:"+expenseService.getMonthAndYearAndAmount());
 	        	model.addAttribute("expense", expenseService.getMonthAndYearAndAmount());
 	 	        model.addAttribute("username",username);
-	 	       localUsername = username;
-	        return "redirect:/dashboard";
+	 	        localUsername = username;
+	 	        return "redirect:/dashboard";
 	        }
 	        model.addAttribute("error",true);
 	        return "login";
 	    }
 
+	 	/**
+	 	 * 
+	 	 * @param model
+	 	 * @return
+	 	 */
 	    @GetMapping("/registration")
 	    public String registration(Model model) {
 	        model.addAttribute("userForm", new User());
 	        return "registration";
 	    }
 
+	    /**
+	     * 
+	     * @param userForm
+	     * @param bindingResult
+	     * @param model
+	     * @return
+	     */
 	    @PostMapping("/registration")
-	    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult,Model model) {
-//	        userValidator.validate(userForm, bindingResult);
-
-	        if (bindingResult.hasErrors()) {
+	    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult,Model model) {if (bindingResult.hasErrors()) {
 	            return "registration";
 	        }
 	        userService.save(userForm);
 	        localUsername=userForm.getUsername();
 	        boolean flag=userService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-//	        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 	        model.addAttribute("expense", expenseService.getMonthAndYearAndAmount());
 	        model.addAttribute("username",userForm.getUsername());
 	        return "redirect:/dashboard";
 	    }
 
+	    /**
+	     * 
+	     * @param model
+	     * @param error
+	     * @param logout
+	     * @return
+	     */
 	    @GetMapping("/login")
 	    public String login(Model model, String error, String logout) {
 	        if (error != null)
@@ -75,9 +98,13 @@ public class UserController {
 	        return "login";
 	    }
 
+	    /**
+	     * 
+	     * @param model
+	     * @return
+	     */
 	    @GetMapping({"/","/dashboard"})
 	    public String welcome(Model model) {
-	    	System.out.println("Expense:"+expenseService.getMonthAndYearAndAmount());
 	    	model.addAttribute("expense", expenseService.getMonthAndYearAndAmount());
 	        model.addAttribute("username",localUsername);
 	        return "dashboard";

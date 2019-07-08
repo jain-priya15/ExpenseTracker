@@ -31,6 +31,10 @@ import com.expense.demo.service.UserService;
 
 @Controller
 public class ExpenseController {
+	
+	/**
+	 * 
+	 */
 
 	@Autowired
 	ExpenseService expenseService;
@@ -41,16 +45,28 @@ public class ExpenseController {
 	@Autowired
     private UserService userService;
 	
+	/**
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/expense")
-	public String dashboard(Model model) {
+	public String expense(Model model) {
 		List<Category> categories = categoryService.getCategories();
 		model.addAttribute("category", categories);
 		model.addAttribute("expense",new Expense());
 		return "expense";
 	}
 	
+	/**
+	 * 
+	 * @param expense
+	 * @param result
+	 * @param model
+	 * @return
+	 */
 	@PostMapping("/expense")
-	public String dashboard(Model model, @ModelAttribute("expense")Expense expense, BindingResult result) {
+	public String expense(@ModelAttribute("expense")Expense expense, BindingResult result,Model model) {
 		User user = null;
 		if (result.hasErrors()) {
 			List<Category> categories = categoryService.getCategories();
@@ -59,24 +75,27 @@ public class ExpenseController {
 	    }
 		try {
 			System.out.println(expense);
-				user = userService.findByUsername(UserController.localUsername);
-				expense.setUser(user);
-	    	  expenseService.addExpense(expense);
-	    	  System.out.println("Try");
+			user = userService.findByUsername(UserController.localUsername);
+			expense.setUser(user);
+	    	expenseService.addExpense(expense);
+	    	System.out.println("Try");
+	    }catch (Exception e) {
+	    	System.out.println("Catch");
+	    	List<Category> categories = categoryService.getCategories();
+	    	model.addAttribute("category", categories);
+	    	model.addAttribute("errorMessage", "Error: " + e.getMessage());
+	    	return "expense";
 	      }
-	      catch (Exception e) {
-	    	  System.out.println("Catch");
-	    	  List<Category> categories = categoryService.getCategories();
-	    	  model.addAttribute("category", categories);
-	    	  model.addAttribute("errorMessage", "Error: " + e.getMessage());
-	    	  return "expense";
-	      }
-		//System.out.println("Expense:"+user.getExpense());
 		model.addAttribute("expense", expenseService.getMonthAndYearAndAmount());
         model.addAttribute("username",UserController.localUsername);
 		return "dashboard";
 	}
 	
+	/**
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@GetMapping({"/listexpense"})
     public String expenseList(Model model) {
     	System.out.println(userService.findByUsername(UserController.localUsername));
@@ -84,26 +103,4 @@ public class ExpenseController {
     	model.addAttribute("username",UserController.localUsername);
         return "expenseList";
     }
-	
-	/*
-	 * @RequestMapping(value = "/addCategories", method = RequestMethod.POST) public
-	 * String addCategories(@RequestBody Category newCategory) { Category category =
-	 * newCategory; categoryService.addCategory(category);
-	 * 
-	 * return "redirect:/expense"; }
-	 * 
-	 * @GetMapping("/{year}/{month}") public ResponseEntity<?>
-	 * getByMonthYear(@PathVariable("year") int year, @PathVariable("month") String
-	 * month) { List<Expense> result = new ArrayList<>(); if("All".equals(month)) {
-	 * result = expenseService.findByYear(year); } else { result =
-	 * expenseService.findByMonthAndYear(month, year); } return new
-	 * ResponseEntity(result, HttpStatus.OK); }
-	 * 
-	 * @PostMapping public ResponseEntity<?> addorUpdateExpense(@RequestBody Expense
-	 * expense) { expenseService.saveOrUpdateExpense(expense); return new
-	 * ResponseEntity("Expense added succcessfully", HttpStatus.OK); }
-	 * 
-	 * @DeleteMapping public void deleteExpense(@RequestParam("id") Long id) {
-	 * expenseService.deleteExpense(id); }
-	 */
 }

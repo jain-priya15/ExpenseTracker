@@ -16,6 +16,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+/**
+ * 
+ * @author Priya
+ *
+ */
 public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
