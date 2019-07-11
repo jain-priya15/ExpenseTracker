@@ -30,14 +30,15 @@ public class UserController {
 	    private UserService userService;
 	 	
 	 	/**
-	 	 * 
+	 	 * This methods check the login username and password is correct or incorrect. If correct it will redirect to dashboard,
+	 	 * Otherwise, it will redirect to login with error;
 	 	 * @param username
 	 	 * @param password
 	 	 * @param model
 	 	 * @return
 	 	 */
 	 	@PostMapping("/login")
-	    public String login(@RequestParam("username") String username, @RequestParam("password") String password,Model model ) {
+	    public String login(@RequestParam("username") String username, @RequestParam("password") String password, Model model) {
 	 		System.out.println(username +"Hello "+ password);
 	 		boolean flag=userService.autoLogin(username, password);
 	        if(flag) {
@@ -51,7 +52,7 @@ public class UserController {
 	    }
 
 	 	/**
-	 	 * 
+	 	 * This method show registration form
 	 	 * @param model
 	 	 * @return
 	 	 */
@@ -62,7 +63,7 @@ public class UserController {
 	    }
 
 	    /**
-	     * 
+	     * This method is used for registration of new user.
 	     * @param userForm
 	     * @param bindingResult
 	     * @param model
@@ -99,7 +100,7 @@ public class UserController {
 	    }
 
 	    /**
-	     * 
+	     * This method show dashboard to the registered user.
 	     * @param model
 	     * @return
 	     */
