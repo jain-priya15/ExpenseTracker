@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.expense.demo.domain.Expense;
 import com.expense.demo.domain.User;
+import com.expense.demo.dto.DashboardExpense;
 import com.expense.demo.dto.ExpenseResponse;
 import com.expense.demo.repository.ExpenseRepository;
 
@@ -53,7 +54,7 @@ public class ExpenseServiceImpl implements ExpenseService{
 		return expenseRepository.findAll();
 	}
 	@Override
-	public List<?> getMonthAndYearAndAmount() {
+	public List<DashboardExpense> getMonthAndYearAndAmount() {
 		return expenseRepository.getGroupByMonthAndYear();
 	}
 	

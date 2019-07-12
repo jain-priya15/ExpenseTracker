@@ -19,6 +19,7 @@ import com.expense.demo.service.UserService;
 @Controller
 public class UserController {
 		/**
+		 * Global variable for saving userName value
 		 * 
 		 */
 		public static String localUsername;
@@ -30,7 +31,7 @@ public class UserController {
 	    private UserService userService;
 	 	
 	 	/**
-	 	 * This methods check the login username and password is correct or incorrect. If correct it will redirect to dashboard,
+	 	 * This methods check the login username and password is correct or incorrect. If correct it call dashboard service,
 	 	 * Otherwise, it will redirect to login with error;
 	 	 * @param username
 	 	 * @param password
@@ -52,7 +53,7 @@ public class UserController {
 	    }
 
 	 	/**
-	 	 * This method show registration form
+	 	 * Create new registration form
 	 	 * @param model
 	 	 * @return
 	 	 */
@@ -63,7 +64,7 @@ public class UserController {
 	    }
 
 	    /**
-	     * This method is used for registration of new user.
+	     * Save registration of new user.
 	     * @param userForm
 	     * @param bindingResult
 	     * @param model
@@ -82,7 +83,7 @@ public class UserController {
 	    }
 
 	    /**
-	     * 
+	     * Login/Logout
 	     * @param model
 	     * @param error
 	     * @param logout
@@ -100,7 +101,7 @@ public class UserController {
 	    }
 
 	    /**
-	     * This method show dashboard to the registered user.
+	     * Landing Page Service.
 	     * @param model
 	     * @return
 	     */

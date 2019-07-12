@@ -15,13 +15,12 @@ import com.expense.demo.service.CategoryService;
 
 @Controller
 public class CategoryController {
-	/**
-	 * 
-	 */
+	
 	@Autowired
 	CategoryService categoryService;
+	
 	/**
-	 *
+	 * Create new category form 
 	 * @param model
 	 * @return
 	 */
@@ -31,7 +30,7 @@ public class CategoryController {
 		return "category";
 	}
 	/**
-	 * 
+	 * Save new category
 	 * @param category
 	 * @param result
 	 * @param model

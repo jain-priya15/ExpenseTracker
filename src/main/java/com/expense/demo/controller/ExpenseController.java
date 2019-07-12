@@ -35,6 +35,7 @@ import com.expense.demo.dto.ExpenseResponse;
 import com.expense.demo.service.CategoryService;
 import com.expense.demo.service.ExpenseService;
 import com.expense.demo.service.UserService;
+import com.expense.demo.util.PaginationService;
 
 
 @Controller
@@ -53,10 +54,13 @@ public class ExpenseController {
 	@Autowired
     private UserService userService;
 	
+	@Autowired
+    private PaginationService pService;
+	
 	/**
-	 * 
+	 * Create new form of expense
 	 * @param model
-	 * @return
+	 * @return 
 	 */
 	@GetMapping("/expense")
 	public String expense(Model model) {
@@ -67,39 +71,38 @@ public class ExpenseController {
 	}
 	
 	/**
+	 * Save expense of a category on specific date
 	 * 
 	 * @param expense
 	 * @param result
 	 * @param model
-	 * @return
+	 * @return 
 	 */
 	@PostMapping("/expense")
 	public String expense(@ModelAttribute("expenseResponse")ExpenseResponse expenseResponse, BindingResult result,Model model) {
-		User user = null;
 		if (result.hasErrors()) {
 			List<Category> categories = categoryService.getCategories();
 			model.addAttribute("category", categories);
 	        return "expense";
 	    }
 		try {
-			System.out.println(expenseResponse);
-			user = userService.findByUsername(UserController.localUsername);
-			expenseResponse.setUser(user);
+			expenseResponse.setUser(userService.findByUsername(UserController.localUsername));
 	    	expenseService.addExpense(expenseResponse);
-	    	System.out.println("Try");
+	    	
 	    }catch (Exception e) {
-	    	System.out.println("Catch");
 	    	List<Category> categories = categoryService.getCategories();
+	    	
 	    	model.addAttribute("category", categories);
 	    	model.addAttribute("errorMessage", "Error: " + e.getMessage());
 	    	return "expense";
-	      }
+	    }
 		model.addAttribute("expense", expenseService.getMonthAndYearAndAmount());
         model.addAttribute("username",UserController.localUsername);
 		return "dashboard";
 	}
 	
 	/**
+	 * show list of all expenses on specific user
 	 * 
 	 * @param model
 	 * @return
@@ -113,21 +116,11 @@ public class ExpenseController {
 			pageable = PageRequest.of(number, 10);
     	Page<Expense> page = expenseService.findAllByUser(UserController.localUsername, pageable);
     	int totalPages = page.getTotalPages();
-        model.addAttribute("pageNumbers", pagination(number, totalPages));
-    
+    	
+        model.addAttribute("pageNumbers", pService.pagination(number, totalPages));
     	model.addAttribute("expenses", page.getContent());
     	model.addAttribute("username",UserController.localUsername);
         return "expenseList";
     }    
 	
-	private List<Integer> pagination(int pageNumber, int totalPages){
-        if(totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPages).boxed().collect(Collectors.toList());
-            return pageNumbers;
-            
-        }
-		return null;
-		
-	}
-
 }

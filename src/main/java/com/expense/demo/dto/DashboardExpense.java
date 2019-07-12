@@ -2,7 +2,10 @@ package com.expense.demo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.sql.Date;
-
+/**
+ * Expenses on Monthly basis
+ *
+ */
 public class DashboardExpense {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MMM-yyyy")
 	private String monthAndYear;
