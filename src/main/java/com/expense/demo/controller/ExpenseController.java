@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.expense.demo.domain.Category;
 import com.expense.demo.domain.Expense;
 import com.expense.demo.domain.User;
+import com.expense.demo.dto.ExpenseResponse;
 import com.expense.demo.service.CategoryService;
 import com.expense.demo.service.ExpenseService;
 import com.expense.demo.service.UserService;
@@ -60,7 +62,7 @@ public class ExpenseController {
 	public String expense(Model model) {
 		List<Category> categories = categoryService.getCategories();
 		model.addAttribute("category", categories);
-		model.addAttribute("expense",new Expense());
+		model.addAttribute("expenseResponse",new ExpenseResponse());
 		return "expense";
 	}
 	
@@ -72,7 +74,7 @@ public class ExpenseController {
 	 * @return
 	 */
 	@PostMapping("/expense")
-	public String expense(@ModelAttribute("expense")Expense expense, BindingResult result,Model model) {
+	public String expense(@ModelAttribute("expenseResponse")ExpenseResponse expenseResponse, BindingResult result,Model model) {
 		User user = null;
 		if (result.hasErrors()) {
 			List<Category> categories = categoryService.getCategories();
@@ -80,10 +82,10 @@ public class ExpenseController {
 	        return "expense";
 	    }
 		try {
-			System.out.println(expense);
+			System.out.println(expenseResponse);
 			user = userService.findByUsername(UserController.localUsername);
-			expense.setUser(user);
-	    	expenseService.addExpense(expense);
+			expenseResponse.setUser(user);
+	    	expenseService.addExpense(expenseResponse);
 	    	System.out.println("Try");
 	    }catch (Exception e) {
 	    	System.out.println("Catch");
@@ -106,18 +108,26 @@ public class ExpenseController {
     public String expenseList(@RequestParam(value="page", defaultValue="0", required=false) int number, Model model) {
 		PageRequest pageable;
 		if(number>0)
-			pageable = PageRequest.of(number - 1, 2);
+			pageable = PageRequest.of(number - 1, 10);
 		else
-			pageable = PageRequest.of(number, 2);
-		System.out.println("pageable"+pageable);
+			pageable = PageRequest.of(number, 10);
     	Page<Expense> page = expenseService.findAllByUser(UserController.localUsername, pageable);
     	int totalPages = page.getTotalPages();
-        if(totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPages).boxed().collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
+        model.addAttribute("pageNumbers", pagination(number, totalPages));
+    
     	model.addAttribute("expenses", page.getContent());
     	model.addAttribute("username",UserController.localUsername);
         return "expenseList";
-    }               
+    }    
+	
+	private List<Integer> pagination(int pageNumber, int totalPages){
+        if(totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPages).boxed().collect(Collectors.toList());
+            return pageNumbers;
+            
+        }
+		return null;
+		
+	}
+
 }

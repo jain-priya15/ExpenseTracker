@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.expense.demo.domain.Expense;
 import com.expense.demo.domain.User;
+import com.expense.demo.dto.ExpenseResponse;
 import com.expense.demo.repository.ExpenseRepository;
 
 @Service
@@ -37,8 +38,8 @@ public class ExpenseServiceImpl implements ExpenseService{
 	}
 	
 	@Override
-	public void addExpense(Expense expense) {
-		System.out.println("Expense: "+expense);
+	public void addExpense(ExpenseResponse expenseResponse) {
+		Expense expense = convertToExpense(expenseResponse);
 		expenseRepository.save(expense);
 	}
 
@@ -54,6 +55,18 @@ public class ExpenseServiceImpl implements ExpenseService{
 	@Override
 	public List<?> getMonthAndYearAndAmount() {
 		return expenseRepository.getGroupByMonthAndYear();
+	}
+	
+	private Expense convertToExpense(ExpenseResponse expenseResponse) {
+		Expense expense = new Expense();
+		expense.setTitle(expenseResponse.getTitle());
+		expense.setCategory(expenseResponse.getCategory());
+		expense.setDescription(expenseResponse.getDescription());
+		expense.setAmount(expenseResponse.getAmount());
+		expense.setDate(expenseResponse.getDate());
+		expense.setUser(expenseResponse.getUser());
+		return expense;
+		
 	}
 
 }

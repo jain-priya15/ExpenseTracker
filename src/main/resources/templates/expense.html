@@ -26,7 +26,7 @@
       <div th:if="${errorMessage != null}"
            th:utext="${errorMessage}" class="error">...</div>
        
-      <form th:action="@{/expense}" th:object="${expense}" method="POST">
+      <form th:action="@{/expense}" th:object="${expenseResponse}" method="POST">
       <input type="hidden" th:field="*{id}" />
          <table>
             <tr>

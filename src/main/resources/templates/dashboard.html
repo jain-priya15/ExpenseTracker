@@ -28,14 +28,14 @@
     </thead>
     <tbody>
         <tr th:each="expense : ${expense}">
-            <td class="value" th:text="${expense[0]}">Month</td>
-            <td class="value" th:text="${expense[1]}">Amount</td>
+            <td class="value" th:text="${expense.monthAndYear}">Month</td>
+            <td class="value"  th:text="${expense.amount}">Amount</td>
         </tr>
     </tbody>
     <tfoot>
     	<tr>
             <td>Total Expenditure</td>
-            <td><b th:text="*{#aggregates.sum(expense.![1])}"></b>INR</td>
+            <td><b th:text="${#aggregates.sum(expense.![amount])}"></b>INR</td>
         </tr>
     </tfoot>
 </table>

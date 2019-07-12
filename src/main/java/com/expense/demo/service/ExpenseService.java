@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.expense.demo.domain.Expense;
+import com.expense.demo.dto.ExpenseResponse;
 
 public interface ExpenseService {
 
@@ -32,7 +33,7 @@ public interface ExpenseService {
 	 * 
 	 * @param expense
 	 */
-	void addExpense(Expense expense);
+	void addExpense(ExpenseResponse expenseResponse);
 	
 	/**
 	 * 
